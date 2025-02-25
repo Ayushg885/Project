@@ -1,42 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/theme/dracula.css">
     <link rel="stylesheet" href="index.css">
-    <title>OCR Tool</title>
-</head>
-<body class="body">
+    <title>Code Scan and run</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/clike/clike.min.js"></script>
+  </head>
+  <body class="body">
   <nav>
     <a href="#">Home</a>
     <a href="#">OCR Reader</a>
     <a href="#">C++ code runner</a>
   </nav>
     <h1>Upload Image or Provide Image URL</h1>
-
-    <!-- File Upload -->
      <div class="container">
        <label for="image">Upload Image:</label>
        <input type="file" accept="image/*" id="image">
-       
-       <!-- Image URL -->
        <label for="image-url">Image URL:</label>
        <input type="text" id="image-url" placeholder="Enter image URL">
        <button class="button">Submit</button>
-       <br>
-       <div id="displayinput"></div>
-       <!-- Results -->
-       <textarea placeholder="written code here" id="results"></textarea>
-       <button id="run">Run</button>
-       <div id="output"></div>
+       <table>
+        <tr>
+            <td><div id="displayinput"></div></td>
+            <td><textarea placeholder="written code here" id="results"></textarea></td>
+        </tr>
+      </table>
+      <button id="run">Run</button>
+      <div id="output"></div>
       </div>
-</body>
-
-<script
-  src="https://code.jquery.com/jquery-3.7.1.js"
-  integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-  crossorigin="anonymous"></script>
-  <script src="index.js"></script>
-  <script src="text.js"></script>
-  <script src="output.js"></script>
+    </body>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+    integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+    crossorigin="anonymous"></script>
+    <script src="index.js"></script>
+    <script src="text.js"></script>
+    <script src="output.js"></script>
 </html>

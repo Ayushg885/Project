@@ -43,7 +43,18 @@ h1{
 }
 textarea{
     visibility: hidden;
+    width: 300px; height: 200px;
 }
 #run{
     visibility: hidden;
+    margin-left: 235px;
+    height: 35px;
+    width:100px;
+}
+#results{
+    width:400px;
+    height:200px;
+}
+#run:hover{
+    background-color:green;
 }
