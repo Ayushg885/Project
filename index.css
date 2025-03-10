@@ -38,16 +38,19 @@ h1{
     margin-top: 8px;
     margin-bottom: 8px;
 }
+tr{
+    gap:5px;
+}
 .container{
     padding: 8px;
 }
-textarea{
+.textarea{
     visibility: hidden;
     width: 300px; height: 200px;
 }
-#run{
+#checkAi{
     visibility: hidden;
-    margin-left: 235px;
+    margin-left: 200px;
     height: 35px;
     width:100px;
 }
@@ -55,6 +58,34 @@ textarea{
     width:400px;
     height:200px;
 }
+#inputs{
+    visibility: hidden;
+    width:400px;
+    height:200px;
+}
+#checkAi:hover{
+    background-color:green;
+} 
+#run{
+    visibility: hidden;
+    height: 35px;
+    width:100px;
+}
 #run:hover{
     background-color:green;
+}
+.options{
+    visibility:hidden;
+    height:35px;
+    width:200px;
+}
+.box{
+    visibility:hidden;
+    color:white;
+}
+#output{
+    width:500px;
+    height:min-content('400px');
+    background-color: black;
+    color:white;
 }

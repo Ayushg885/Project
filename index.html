@@ -3,18 +3,27 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/theme/dracula.css">
     <link rel="stylesheet" href="index.css">
-    <title>Code Scan and run</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/clike/clike.min.js"></script>
+    <title>Image code compiler</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+    integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+    crossorigin="anonymous"></script>
+
+    <script>
+      var require = { paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs' } };
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs/loader.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs/editor/editor.main.nls.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs/editor/editor.main.js"></script>
+    <script type="module" src="index.js"></script>
+    <script  type="module" src="text.js"></script>
+    <script  type="module" src="output.js"></script>
   </head>
   <body class="body">
   <nav>
     <a href="#">Home</a>
-    <a href="#">OCR Reader</a>
-    <a href="#">C++ code runner</a>
+    <a href="#">Coding</a>
+    <a href="/develop.html">Development</a>
   </nav>
     <h1>Upload Image or Provide Image URL</h1>
      <div class="container">
@@ -26,17 +35,20 @@
        <table>
         <tr>
             <td><div id="displayinput"></div></td>
-            <td><textarea placeholder="written code here" id="results"></textarea></td>
+            <td><div class="textarea" id="results"></div></td>
+            <td><div class="textarea" id="inputs"></div></td>
         </tr>
       </table>
+      <button id="checkAi">check with Ai</button>
+      <select class="options" id="langType">
+      <option value="cpp">C++</option>
+      <option value="py">python</option>
+      <option value="java">Java</option>
+    </select>
+      <input type="checkbox" id="cbox" class="box"/>
+      <label for="cbox" id="cbox" class="box">Input</label>
       <button id="run">Run</button>
       <div id="output"></div>
       </div>
-    </body>
-    <script src="https://code.jquery.com/jquery-3.7.1.js"
-    integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-    crossorigin="anonymous"></script>
-    <script src="index.js"></script>
-    <script src="text.js"></script>
-    <script src="output.js"></script>
+      </body>
 </html>

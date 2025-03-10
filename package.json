@@ -1,0 +1,18 @@
+{
+  "name": "lenproject",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "compilex": "^0.7.4",
+    "express": "^4.21.2",
+    "monaco-editor": "^0.52.2",
+    "nodemon": "^3.1.9"
+  }
+}
