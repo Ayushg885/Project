@@ -14,9 +14,6 @@ app.use(express.static(path.join(__dirname)));
 
 // ✅ Serve the HTML file
 app.get("/", (req, res) => {
-    compiler.flush(function(){
-        console.log("deleted");
-    })
     res.sendFile(path.join(__dirname, "index.html"));
 });
 
@@ -28,7 +25,7 @@ app.post("/compile", function (req, res) {
     try {
         if (lang == "cpp") {
             if (!input) {
-                var envData = { OS: "windows", cmd: "g++",options:{timeout:2000}};
+                var envData = { OS: "windows", cmd: "g++",options:{timeout:5000}};
                 compiler.compileCPP(envData, code, function (data) {
                     if (data.output) {
                         res.send(data);
@@ -114,6 +111,6 @@ app.post("/compile", function (req, res) {
     }    
 })
 
-app.listen(3365, () => {
-    console.log("Server is running on http://localhost:3365");
+app.listen(8000, () => {
+    console.log("Server is running on http://localhost:8000");
 });

@@ -32,6 +32,7 @@
        <label for="image-url">Image URL:</label>
        <input type="text" id="image-url" placeholder="Enter image URL">
        <button class="button">Submit</button>
+      <div class="display">
        <table>
         <tr>
             <td><div id="displayinput"></div></td>
@@ -40,15 +41,16 @@
         </tr>
       </table>
       <button id="checkAi">check with Ai</button>
-      <select class="options" id="langType">
+      <select title="langType" class="options" id="langType">
       <option value="cpp">C++</option>
       <option value="py">python</option>
       <option value="java">Java</option>
     </select>
       <input type="checkbox" id="cbox" class="box"/>
-      <label for="cbox" id="cbox" class="box">Input</label>
+      <label for="cbox" class="box">Input</label>
       <button id="run">Run</button>
       <div id="output"></div>
       </div>
+     </div>
       </body>
 </html>

@@ -7,12 +7,7 @@ document.querySelector('.button').addEventListener('click', async function () {
     const resultsTextarea = document.querySelector('#results');
     const inputsTextarea = document.querySelector('#inputs');
     var langType = document.querySelector('#langType');
-    resultsTextarea.style.visibility = 'visible';
-    inputsTextarea.style.visibility = 'visible';
-    document.querySelector('#checkAi').style.visibility = 'visible';
-    document.querySelector('#run').style.visibility = 'visible';
-    document.querySelector('.options').style.visibility = 'visible';
-    document.querySelector('.box').style.visibility = 'visible';
+    document.querySelector('.display').style.visibility = 'visible';
     check="1";
     
     displayDiv.innerHTML = '';

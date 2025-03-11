@@ -21,7 +21,7 @@ run.addEventListener('click', async function () {
     console.log("Sending code to API:", code); // Debugging log
 
     try {
-        var oData = await fetch("http://localhost:3365/compile", {
+        var oData = await fetch("http://localhost:8000/compile", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -34,6 +34,7 @@ run.addEventListener('click', async function () {
         }
 
         var d = await oData.json();
+        console.log(`${d}`);
         output.textContent = d.output || "Error: No output received";
     } catch (error) {
         output.textContent = "Error parsing response: " + error.message;

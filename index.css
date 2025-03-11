@@ -3,7 +3,7 @@
 }
 body{
     font-family: Arial, sans-serif;
-    background-color:black;
+    background-color:grey;
     color:white;
 }
 .tags {
@@ -45,11 +45,10 @@ tr{
     padding: 8px;
 }
 .textarea{
-    visibility: hidden;
     width: 300px; height: 200px;
 }
 #checkAi{
-    visibility: hidden;
+    
     margin-left: 200px;
     height: 35px;
     width:100px;
@@ -59,7 +58,6 @@ tr{
     height:200px;
 }
 #inputs{
-    visibility: hidden;
     width:400px;
     height:200px;
 }
@@ -67,7 +65,6 @@ tr{
     background-color:green;
 } 
 #run{
-    visibility: hidden;
     height: 35px;
     width:100px;
 }
@@ -75,12 +72,10 @@ tr{
     background-color:green;
 }
 .options{
-    visibility:hidden;
     height:35px;
     width:200px;
 }
 .box{
-    visibility:hidden;
     color:white;
 }
 #output{
@@ -88,4 +83,7 @@ tr{
     height:min-content('400px');
     background-color: black;
     color:white;
+}
+.display{
+    visibility: hidden;
 }
