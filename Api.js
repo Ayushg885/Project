@@ -101,16 +101,19 @@ app.post("/compile", function (req, res) {
                 });
             }
         }
-        compiler.flush(function () {
-            console.log("Temporary files deleted.");
-        });
+        setTimeout(() => {
+            compiler.flush(() => {
+                console.log("Temporary files deleted.");
+            });
+        }, 5000); // 5 seconds delay        
     }
 
     catch (e) {
         console.error("Compilation Error:", e);
+        res.status(500).send({ output: "Server Compilation Error", error: e.toString() });
     }    
 })
 
-app.listen(8000, () => {
-    console.log("Server is running on http://localhost:8000");
+app.listen(3600, () => {
+    console.log("Server is running on http://localhost:3600");
 });

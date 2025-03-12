@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="index.css">
-    <title>Image code compiler</title>
+    <title>Coder</title>
     <script src="https://code.jquery.com/jquery-3.7.1.js"
     integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
     crossorigin="anonymous"></script>
@@ -21,10 +21,14 @@
   </head>
   <body class="body">
   <nav>
+    <div class="lists">
     <a href="#">Home</a>
     <a href="#">Coding</a>
     <a href="/develop.html">Development</a>
+    </div>
+    <h2 class="main-tittle">Coder</h2>
   </nav>
+  <div id="main-content">
     <h1>Upload Image or Provide Image URL</h1>
      <div class="container">
        <label for="image">Upload Image:</label>
@@ -49,8 +53,14 @@
       <input type="checkbox" id="cbox" class="box"/>
       <label for="cbox" class="box">Input</label>
       <button id="run">Run</button>
+    </div>
+      <div class="displayRun">
       <div id="output"></div>
+      <button id="explain">Explain</button>      
+      <textarea id="explainCode"></textarea>
+      
       </div>
      </div>
+    </div>
       </body>
 </html>
