@@ -21,7 +21,6 @@ run.addEventListener('click', async function () {
         inputValue = "";
     }
 
-
     code = {
         code: codeText,
         input: input.checked ? inputValue : "",
@@ -56,9 +55,10 @@ const API_KEY = "AIzaSyC9vvHFK3wfn7oaSMBGgrAYerSR15aD51Q";//Gemini api key
 explain.addEventListener("click", async () => {
     var codeText = window.cppEditor ? window.cppEditor.getValue() : editorElement.value;
     var inputValue = window.cppEditor2 ? window.cppEditor2.getValue().trim() : "";
-    let fixedCode = await explainthecode(output, codeText, inputValue);
-    if (fixedCode !== "Error in AI response!") {
-        explainCode.value = fixedCode;
+    let explanation= await explainthecode(output, codeText, inputValue);
+    console.log(explanation);
+    if (explanation !== "Error in AI response!") {
+        explainCode.innerHTML= `${explanation}`;
     } else {
         console.error("AI correction failed, keeping manual changes.");
     }
@@ -84,7 +84,8 @@ async function explainthecode(output, codeText, inputValue) {
 
                                             🛠 **Tips:** Agar code "${codeText}" C++ hai toh using namespace std; ka use zaroor dekho, aur Python ke case mein indentation aur efficiency ka dhyan do.  
                                             Bhai-lang mein simple aur friendly tareeke se samjhao! 
-                                            text ko short rakho time waste mt krna` }
+                                            text ko short rakho time waste mt krna and reply hinglish me dena very comfortable bhai wali language me.
+                                            write everything in the html format with bold and italic and underline tag usage using same font size` }
                         ]
                     }
                 ]

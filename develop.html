@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="develop.css">
-    <script type="module" src="develop.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs/loader.min.js"></script>
+    <script>
+        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs' } });
+    </script>
+    <script type="module" src="develop.js"></script>
     <title>Developer</title>
 </head>
 <body>
@@ -16,65 +19,30 @@
         <a href="/develop.html">Development</a>
         </div>
         <h2 class="main-tittle">Developer</h2>
+        <div class="downloadbtns">
+        <input title="codeDownload" type="file" id="uploadCode" accept=".json"/>
+        <button id="downloadCode">Download Code</button></div>
     </nav>
 
     <div class="divisions">
         <div class="inputs">
             <label>HTML</label>
             <div id="HTMLcode" class="editor-container"></div>
-
+    
             <label>CSS</label>
             <div id="CSScode" class="editor-container"></div>
-
+    
             <label>JavaScript</label>
             <div id="JScode" class="editor-container"></div>
         </div>
-        <output class="output"></output>
+    
+        <!-- Live Preview Pane -->
+        <iframe title="output" id="livePreview" class="output"></iframe>
+    </div>  
+    <div id="console-container">
+        <button id="clear-console">Clear Console</button>
+        <div id="console-output"></div>
     </div>
 </body>
-
-<script>
-    require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs' } });
-
-    require(["vs/editor/editor.main"], function () {
-        const editors = {
-            html: monaco.editor.create(document.getElementById("HTMLcode"), {
-                value: "<!-- Write your HTML here -->",
-                language: "html",
-                theme: "vs-dark",
-                automaticLayout: true
-            }),
-            css: monaco.editor.create(document.getElementById("CSScode"), {
-                value: "/* Write your CSS here */",
-                language: "css",
-                theme: "vs-dark",
-                automaticLayout: true
-            }),
-            js: monaco.editor.create(document.getElementById("JScode"), {
-                value: "// Write your JavaScript here",
-                language: "javascript",
-                theme: "vs-dark",
-                automaticLayout: true
-            })
-        };
-
-        // Function to get the latest code and display output
-        function updateOutput() {
-            const htmlCode = editors.html.getValue();
-            const cssCode = `${editors.css.getValue()}`;
-            const jsCode = `${editors.js.getValue()}`;
-            document.querySelector(".output").innerHTML = htmlCode + "<style>" + cssCode +"</style>";
-            eval(editors.js.getValue()); 
-        }
-
-        // Listen for changes and update output
-        document.querySelector('#HTMLcode').addEventListener('keyup',updateOutput)
-        document.querySelector('#CSScode').addEventListener('keyup',updateOutput)
-        document.querySelector('#JScode').addEventListener('keyup',updateOutput)
-        updateOutput(); // Initial call
-    });
-document.querySelector('.output').style.backgroundColor="#91b3c9";
-
-</script>
 
 </html>

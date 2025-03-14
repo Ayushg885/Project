@@ -32,13 +32,14 @@ a:hover{
 }
 #main-content{
     display: flex;
+    margin-top:9.8rem;
     justify-content: center;
     align-items: center;
     height:100%; 
     flex-direction: column; 
 }
 h1{
-    font-size: 60px ;
+    font-size: 54px ;
     justify-content: center;
     align-content: center;
     margin-top: 8px;
@@ -50,9 +51,11 @@ tr{
 .container{
     padding: 8px;
     justify-items:center;
+    width:100%;
 }
 .textarea{
-    width: 300px; height: 200px;
+    width: 30%;
+    height: 200px;
 }
 #checkAi{
     
@@ -87,7 +90,7 @@ tr{
 }
 #output{
     height: 300px;
-    min-width: 40%;
+    min-width: 75%;
     background-color: black;
     color:white;
 }
@@ -97,21 +100,24 @@ tr{
 .displayRun{
     visibility: collapse;
     display:flex;
+    flex-direction:column;
     width:100%;
     align-items:center;
     justify-content:center;
+    margin:10px;
 }
 #explain{
     height: 35px;
     width:100px;
 }
+
 #explain:hover{
     background-color:green;
 }
 
 #explainCode{
     height:300px;
-    min-width:40%;
+    max-width:60%;
     background-color:black;
     color:white;
 }
