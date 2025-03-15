@@ -157,64 +157,57 @@ document.addEventListener("DOMContentLoaded", function () {
         
 
     });
-});
+});document.addEventListener("DOMContentLoaded", function () {
+    let consoleContainer = document.createElement("div");
+    consoleContainer.id = "console-container";
+    document.body.appendChild(consoleContainer);
 
-document.addEventListener("DOMContentLoaded", function () {
-    const consoleOutput = document.getElementById("console-output");
-    const clearConsoleButton = document.getElementById("clear-console");
+    let consoleOutput = document.createElement("div");
+    consoleOutput.id = "console-output";
+    consoleContainer.appendChild(consoleOutput);
 
-    function addToConsole(type, message) {
-        const logDiv = document.createElement("div");
-        logDiv.innerHTML = message;
+    let clearButton = document.createElement("button");
+    clearButton.id = "clear-console";
+    clearButton.textContent = "Clear Console";
+    clearButton.onclick = function () {
+        consoleOutput.innerHTML = "";
+    };
+    consoleContainer.appendChild(clearButton);
 
-        if (type === "error") {
-            logDiv.style.color = "red";
-        } else if (type === "warn") {
-            logDiv.style.color = "yellow";
-        } else {
-            logDiv.style.color = "white";
-        }
-
-        consoleOutput.appendChild(logDiv);
-        consoleOutput.scrollTop = consoleOutput.scrollHeight; // Auto-scroll
+    function logMessage(type, message) {
+        let msgElement = document.createElement("div");
+        msgElement.textContent = `[${type.toUpperCase()}] ${message}`;
+        msgElement.style.color = type === "error" ? "red" : type === "warn" ? "yellow" : "white";
+        consoleOutput.appendChild(msgElement);
+        consoleOutput.scrollTop = consoleOutput.scrollHeight;
     }
 
-    // ✅ Override Default Console Methods
-    const originalConsole = {
-        log: console.log,
-        error: console.error,
-        warn: console.warn
-    };
-
     console.log = function (...args) {
-        originalConsole.log(...args);
-        addToConsole("log", `🟢 LOG: ${args.join(" ")}`);
+        logMessage("log", args.join(" "));
     };
 
     console.error = function (...args) {
-        originalConsole.error(...args);
-        addToConsole("error", `🔴 ERROR: ${args.join(" ")}`);
+        logMessage("error", args.join(" "));
     };
 
     console.warn = function (...args) {
-        originalConsole.warn(...args);
-        addToConsole("warn", `🟡 WARN: ${args.join(" ")}`);
+        logMessage("warn", args.join(" "));
     };
 
-    // ✅ Clear Console Button
-    clearConsoleButton.addEventListener("click", function () {
-        consoleOutput.innerHTML = "";
-    });
-    (function() {
-        var oldLog = console.log;
-        console.log = function(message) {
-            oldLog.apply(console, arguments); // ✅ Normal console me dikhayein
-            let consoleOutput = document.getElementById("customConsole"); // ✅ Monaco Console Pane
-            if (consoleOutput) {
-                consoleOutput.innerHTML += `<p style="color: white;">${message}</p>`;
-            }
-        };
-    })();
-    console.log("✅ Custom Console Initialized!");
-});
+    // ✅ Execute JavaScript from Monaco Editor
+    function executeEditorJS() {
+        try {
+            let code = window.editors.js.getValue(); // ✅ Get JS Code from Monaco Editor
+            let result = eval(code);
+            if (result !== undefined) console.log(result);
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
+    // ✅ Button to Execute Monaco JS Code
+    let runButton = document.createElement("button");
+    runButton.textContent = "Run JS";
+    runButton.onclick = executeEditorJS;
+    consoleContainer.appendChild(runButton);
+});
