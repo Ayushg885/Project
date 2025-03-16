@@ -30,7 +30,7 @@ run.addEventListener('click', async function () {
     console.log("Sending code to API:", code); // Debugging log
 
     try {
-        var oData = await fetch("https://cod-r-ayushg885s-projects.vercel.app/compile", {
+        var oData = await fetch("https://cod-iub2zrv9p-ayushg885s-projects.vercel.app/api/compile", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
