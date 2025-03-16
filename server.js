@@ -8,67 +8,44 @@ const app = express();
 const options = { stats: true };
 compiler.init(options);
 
-// ✅ Middleware setup
+// ✅ Enable CORS (Vercel ke liye zaroori)
+app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, "public")));
 
-// ✅ Home Route
+// ✅ Serve the HTML file (for debugging)
 app.get("/", (req, res) => {
     res.send("Compiler API is running...");
 });
 
-// ✅ Compilation Route
+// ✅ FIX: Correct API Route
 app.post("/api/compile", async (req, res) => {
-    var { code, input, lang } = req.body;
-    var envData = { OS: "linux", cmd: "g++" }; // Linux support for Vercel
+    const { code, input, lang } = req.body;
+    const envData = { OS: "linux", cmd: "g++" }; // ✅ Linux support for Vercel
 
     try {
         if (lang === "cpp") {
-            if (!input) {
-                compiler.compileCPP(envData, code, function (data) {
-                    res.send(data.output ? data : { output: "error" });
-                });
-            } else {
-                compiler.compileCPPWithInput(envData, code, input, function (data) {
-                    res.send(data.output ? data : { output: "error" });
-                });
-            }
+            compiler.compileCPPWithInput(envData, code, input || "", (data) => {
+                res.send(data.output ? data : { output: "error" });
+            });
         } else if (lang === "java") {
-            if (!input) {
-                compiler.compileJava(envData, code, function (data) {
-                    res.send(data.output ? data : { output: "error" });
-                });
-            } else {
-                compiler.compileJavaWithInput(envData, code, input, function (data) {
-                    res.send(data.output ? data : { output: "error" });
-                });
-            }
+            compiler.compileJavaWithInput(envData, code, input || "", (data) => {
+                res.send(data.output ? data : { output: "error" });
+            });
         } else if (lang === "py") {
-            if (!input) {
-                compiler.compilePython(envData, code, function (data) {
-                    res.send(data.output ? data : { output: "error" });
-                });
-            } else {
-                compiler.compilePythonWithInput(envData, code, input, function (data) {
-                    res.send(data.output ? data : { output: "error" });
-                });
-            }
+            compiler.compilePythonWithInput(envData, code, input || "", (data) => {
+                res.send(data.output ? data : { output: "error" });
+            });
+        } else {
+            res.status(400).send({ output: "Invalid Language" });
         }
 
         // ✅ Cleanup temporary files
-        setTimeout(() => {
-            compiler.flush(() => {
-                console.log("Temporary files deleted.");
-            });
-        }, 5000);
+        setTimeout(() => compiler.flush(() => console.log("Temporary files deleted.")), 5000);
     } catch (e) {
         console.error("Compilation Error:", e);
         res.status(500).send({ output: "Server Compilation Error", error: e.toString() });
     }
 });
 
-// ✅ Server listening for Vercel
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
-module.exports = app; // Vercel ke liye zaroori
+// ✅ Serverless Function Export for Vercel
+module.exports = app;
