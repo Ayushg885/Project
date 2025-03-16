@@ -11,10 +11,10 @@
   },
   "main": "server.js",
   "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
     "body-parser": "^1.20.2",
-    "compilex": "^0.7.4"
+    "compilex": "^0.7.4",
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
   },
   "private": false
 }
