@@ -12,8 +12,6 @@ compiler.init(options);
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use(cors({ origin: "https://https://len-project-m4odia5e4-ayushg885s-projects.vercel.app/" }));
-
 // ✅ Home Route
 app.get("/", (req, res) => {
     res.send("Compiler API is running...");
