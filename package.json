@@ -5,10 +5,7 @@
     "dev": "node server.js",
     "start": "node server.js",
     "deploy": "vercel deploy --prod",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "engines": {
-    "node": "18"
+    "test": "jest"
   },
   "main": "server.js",
   "dependencies": {
