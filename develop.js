@@ -182,9 +182,12 @@ document.addEventListener("DOMContentLoaded", function () {
         consoleOutput.scrollTop = consoleOutput.scrollHeight;
     }
 
-    console.log = function (...args) {
-        logMessage("log", args.join(" "));
-    };
+    window.editorConsole = console.log;
+console.log = function (...args) {
+    logMessage("log", args.join(" "));
+    window.editorConsole(...args); // Preserve original console.log
+};
+
 
     console.error = function (...args) {
         logMessage("error", args.join(" "));

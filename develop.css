@@ -1,90 +1,101 @@
-*{
-    margin:0px;
-}
-body{
-    background-color:#117bef;
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
-nav{
-    background-color:rgb(99 177 228);
-    display: flex;
-    width:auto;
-    height:40px;
-    padding: 13px;
-    align-items:center;
-}
-nav a{
-    padding: 15px;
-    list-style: none;
-    text-decoration:none;
-    color:white;
-    text-overflow: none;
-    justify-content: center;
-    align-content: center;;
-}
-a:hover{
+
+body {
     background-color: #117bef;
-}
-.downloadbtns{
-    position:absolute;
-    left:75%;
-}
-
-.main-tittle{
-    font-size:33px;
-    position: absolute;
-    left: 50%;
-}
-#main-content{
+    font-family: Arial, sans-serif;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    height: auto; 
-    flex-direction: column; 
+    padding: 10px;
 }
 
-.divisions{
-    display:flex;    
+/* Navbar Styling */
+nav {
+    background-color: rgb(99, 177, 228);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
 }
-.inputs{
-    width:50%;
-    display:flex;
-    flex-direction:column;
+
+nav a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    margin: 0 10px;
 }
-label{
-    color:white;
-    font-size:15px;
+
+.downloadbtns {
+    display: flex;
+    gap: 10px;
 }
+
+/* Main Content Layout */
+.divisions {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Split editors and preview */
+    gap: 15px;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 70px;
+}
+
+/* Editors Panel */
+.inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Editor Boxes */
+.editor-container {
+    background-color: rgb(54, 54, 55);
+    width: 100%;
+    height: 250px; /* Auto scaling */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+/* Output Section */
 .output {
     background-color: white;
+    width: 100%;
     border: 1px solid #ddd;
-    width: 50%;
+    border-radius: 5px;
+    height: 100%;
+    min-height: 300px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
-.editor-container {
-    background-color:rgb(54 54 55);
-    width: 100%;
-    height: 200px;
-    border: 1px solid #ddd;
-}
+/* Console Panel */
 #console-container {
     background-color: black;
     color: white;
     font-family: monospace;
-    height:200px;
-    margin-top:25px;
+    height: 200px;
     width: 100%;
     overflow-y: auto;
     border-top: 2px solid #555;
-    position: absolute;
-    left: 0;
+    padding: 10px;
 }
+
 #console-output {
     height: 150px;
     overflow-y: auto;
     white-space: pre-wrap;
 }
+
+/* Console Clear Button */
 #clear-console {
     background: red;
     color: white;
@@ -92,92 +103,35 @@ label{
     padding: 5px 10px;
     cursor: pointer;
     font-weight: bold;
+    margin-bottom: 5px;
 }
 
-@media only screen and (max-width: 750px) {
-    .divisions{
-        display:flex;
-        flex-direction :column;
+/* Responsive Design */
+@media only screen and (max-width: 850px) {
+    .divisions {
+        grid-template-columns: 1fr; /* Stack editors & output */
     }
-    .inputs{
-        width:100%;
-        flex-direction:column;
-        margin-left:5px;
-        margin-right:5px;
+
+    .editor-container {
+        height: 200px; /* Reduce height on small screens */
     }
-    .output{
-        width:100%;
-        margin-top:20px;
-        margin-left:5px;
-        margin-right:5px;
-        height: 100vh; /* Full height use kare */    
+
+    .output {
+        min-height: 250px;
     }
-}
-.menu-btn{
-    visibility:hidden;
-}
-@media screen and (max-width: 800px) {
-    #draw-menu {
-        position: fixed;
-        left: 0;
-        top: 50px;
-        width: 80%;
-        max-width: 250px;
-        background: rgba(0, 0, 0, 0.8);
-        color: white;
-        padding: 10px;
-        display: none; /* Initially hidden */
+
+    .downloadbtns {
         flex-direction: column;
-        z-index: 1000;
+        align-items: flex-end;
     }
 
-    #draw-menu.active {
-        display: flex; /* Show when active */
-    }
-
-    #draw-menu a {
-        display: block;
-        padding: 10px;
-        border-bottom: 1px solid #555;
-        text-decoration: none;
-        color: white;
-        text-align: left;
-    }
-
-    #draw-menu a:hover {
-        background: green;
-    }
-
-    /* Menu Toggle Button */
-    .menu-btn {
-        visibility:visible;
-        display: block;
-        position: fixed;
-        left: 10px;
-        top: 10px;
-        background: green;
-        color: white;
-        padding: 10px;
-        border: none;
-        cursor: pointer;
-        z-index: 1001;
+    #console-container {
+        height: 150px;
     }
 
     nav {
         flex-direction: column;
         text-align: center;
-        padding: 10px;
-    }
-
-    h1{
-        font-size:34px;
-    }
-    #main-content{
-        display: flex;
-        margin-top: 5rem;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-        flex-direction: column;
+        padding: 10px 0;
     }
 }

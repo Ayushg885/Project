@@ -13,16 +13,18 @@
     <title>Developer</title>
 </head>
 <body>
-    <nav><button class="menu-btn" >☰ </button>
+    <nav>
+        <button class="menu-btn">☰</button>
         <div id="draw-menu">
-        <a href="#">Home</a>
-        <a href="#">Coding</a>
-        <a href="/develop.html">Development</a>
+            <a href="#">Home</a>
+            <a href="#">Coding</a>
+            <a href="/develop.html">Development</a>
         </div>
         <h2 class="main-tittle">Developer</h2>
         <div class="downloadbtns">
-        <input title="codeDownload" type="file" id="uploadCode" accept=".json"/>
-        <button id="downloadCode">Download Code</button></div>
+            <input title="codeDownload" type="file" id="uploadCode" accept=".json"/>
+            <button id="downloadCode">Download Code</button>
+        </div>
     </nav>
 
     <div class="divisions">
@@ -38,12 +40,12 @@
         </div>
     
         <!-- Live Preview Pane -->
-        <iframe title="output" id="livePreview" class="output"></iframe>
+        <iframe title="output" id="livePreview" class="output" sandbox="allow-scripts"></iframe>
     </div>  
+
     <div id="console-container">
         <button id="clear-console">Clear Console</button>
         <div id="console-output"></div>
     </div>
 </body>
-
 </html>
