@@ -1,0 +1,227 @@
+* {
+    margin: 0px;
+}
+html, body {
+    overflow-x: hidden;
+    font-family: Arial, sans-serif;
+    color: white;
+}
+body {
+    background-image: url('background.png');
+}
+
+/* Navbar */
+nav {
+    display: flex;
+    width: auto;
+    min-height: 40px;
+    padding: 13px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+nav a {
+    padding: 15px;
+    text-decoration: none;
+    color: white;
+    border-radius: 10px;
+}
+a:hover {
+    background-color: green;
+}
+#login {
+    position: absolute;
+    right: 25px;
+    font-size: larger;
+}
+.main-tittle {
+    font-size: 33px;
+    position: relative;
+    left: 30%;
+}
+
+/* Main Content */
+#main-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 9.8rem;
+    height: 100%;
+}
+h1 {
+    font-size: 54px;
+    margin: 8px 0;
+}
+tr {
+    gap: 5px;
+}
+.container {
+    padding: 8px;
+    width: 100%;
+    justify-items: center;
+}
+.textarea,
+#results,
+#inputs {
+    width: 30%;
+    height: 200px;
+}
+#results,
+#inputs {
+    width: 400px;
+}
+#checkAi, #run, #explain {
+    height: 35px;
+    width: 100px;
+    margin-bottom: 10px;
+}
+.selections{
+    display: flex;
+    margin:8px;
+    gap:10px;
+}
+#checkAi {
+    margin-left: 200px;
+}
+#checkAi:hover,
+#run:hover,
+#explain:hover {
+    background-color: green;
+}
+.options {
+    height: 35px;
+    width: 200px;
+}
+.box {
+    color: white;
+}
+#output {
+    height: 300px;
+    min-width: 75%;
+    background-color: black;
+}
+.display,
+.displayRun {
+    visibility: collapse;
+}
+.displayRun {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+}
+#explainCode {
+    max-width: 80%;
+    background-color: #958585;
+    color: white;
+    padding: 45px;
+}
+
+/* Menu Button */
+.menu-btn {
+    visibility: hidden;
+}
+
+/* -------------------- Responsive Styles -------------------- */
+@media screen and (max-width: 800px) {
+    nav {
+        flex-direction: column;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .main-tittle {
+        font-size: 28px;
+        position: static;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 34px;
+    }
+
+    tr {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #main-content {
+        margin-top: 5rem;
+        margin: 20px;
+    }
+
+    #checkAi {
+        margin-left: 5px;
+        width: -webkit-fill-available;
+    }
+
+    /* Menu */
+    #draw-menu {
+        position: fixed;
+        left: 0;
+        top: 50px;
+        width: 80%;
+        max-width: 250px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 10px;
+        display: none;
+        flex-direction: column;
+        z-index: 1000;
+    }
+
+    #draw-menu.active {
+        display: flex;
+    }
+
+    #draw-menu a {
+        display: block;
+        padding: 10px;
+        border-bottom: 1px solid #555;
+        color: white;
+        text-align: left;
+        text-decoration: none;
+    }
+
+    #draw-menu a:hover {
+        background: green;
+    }
+
+    .menu-btn {
+        visibility: visible;
+        display: block;
+        position: fixed;
+        left: 10px;
+        top: 10px;
+        background: green;
+        color: white;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+        z-index: 1001;
+    }
+
+    .display {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .selections{
+        display:flex;
+        flex-direction:column;
+        gap:0px;
+    }
+
+    .runbox {
+        width: -webkit-fill-available;
+        display: flex;
+        flex-direction:center;
+        align-items:center;
+        gap: 5px;
+    }
+    .options{
+        text-align:center;
+    }
+}

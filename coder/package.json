@@ -1,0 +1,40 @@
+{
+  "name": "functions",
+  "description": "Vercel Deployment for Compiler API",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "nodemon server.js",
+    "deploy": "vercel deploy --prod",
+    "test": "jest"
+  },
+  "main": "server.js",
+  "dependencies": {
+    "@vercel/speed-insights": "^1.2.0",
+    "bcryptjs": "^3.0.2",
+    "body-parser": "^1.20.2",
+    "bootstrap-icons": "^1.11.3",
+    "compilex": "^0.7.4",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.15.0",
+    "mongoose": "^8.13.1",
+    "node-fetch": "^3.3.2",
+    "socket.io": "^4.8.1",
+    "ws": "^8.18.1"
+  },
+  "private": true,
+  "version": "1.0.0",
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ayushghbtu/CodePlatform.git"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ayushghbtu/CodePlatform/issues"
+  },
+  "homepage": "https://github.com/ayushghbtu/CodePlatform#readme"
+}
