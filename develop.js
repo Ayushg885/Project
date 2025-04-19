@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // ✅ Load Monaco Editor
     require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs' } });
 
     require(["vs/editor/editor.main"], function () {
@@ -7,29 +6,24 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("❌ Error: Monaco Editor failed to load!");
             return;
         }
-        
-        // ✅ Get editor containers
+
         const htmlContainer = document.getElementById("HTMLcode");
         const cssContainer = document.getElementById("CSScode");
         const jsContainer = document.getElementById("JScode");
         const livePreview = document.getElementById("livePreview");
+        const consoleContainer = document.getElementById("console-container");
+        const consoleOutput = document.getElementById("console-output");
         
-        if (!htmlContainer || !cssContainer || !jsContainer || !livePreview) {
-            console.error("❌ Error: One or more required elements are missing from the DOM.");
+        if (!htmlContainer || !cssContainer || !jsContainer || !livePreview || !consoleContainer || !consoleOutput) {
+            console.error("❌ Error: Missing required elements.");
             return;
         }
-
-        
-        
         function getSavedCode(key, defaultValue) {
             return localStorage.getItem(key) || defaultValue;
         }
-        
-        
-        
+
         window.monaco = monaco;
 
-        // ✅ Initialize Monaco Editors
         window.editors = {
             html: monaco.editor.create(htmlContainer, {
                 value: getSavedCode("htmlCode", "<!-- Write your HTML here -->"),
@@ -38,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 automaticLayout: true
             }),
             css: monaco.editor.create(cssContainer, {
-                value:  getSavedCode("cssCode", "/* Write your CSS here */"),
+                value: getSavedCode("cssCode", "/* Write your CSS here */"),
                 language: "css",
                 theme: "vs-dark",
                 automaticLayout: true
@@ -50,14 +44,114 @@ document.addEventListener("DOMContentLoaded", function () {
                 automaticLayout: true
             })
         };
-        console.log("✅ Monaco Editors Initialized:", window.editors);
+
         function autoSaveCode() {
             localStorage.setItem("htmlCode", editors.html.getValue());
             localStorage.setItem("cssCode", editors.css.getValue());
             localStorage.setItem("jsCode", editors.js.getValue());
         }
 
-        // ✅ Function to debounce frequent calls for performance optimization
+        function detectDangerousCode(js) {
+            const riskyPatterns = [
+                /while\s*\(\s*true\s*\)/gi,
+                /for\s*\(\s*;\s*;\s*\)/gi,
+                /setInterval\s*\(/gi,
+                /setTimeout\s*\(\s*function\s*\(\)\s*{\s*while\s*\(/gi,
+                /document\.write\s*\(/gi,
+                /while\s*\(\s*[a-zA-Z_$][\w$]*\s*[<>=!]/gi  // NEW: detects like while(i<3), while(flag==true)
+            ];
+            return riskyPatterns.some(pattern => pattern.test(js));
+        }
+        
+        
+        
+        function updateOutput() {
+            const htmlCode = editors.html.getValue();
+            const cssCode = editors.css.getValue();
+            const jsCode = editors.js.getValue();
+        
+            const livePreview = document.getElementById("livePreview");
+            const consoleOutput = document.getElementById("console-output");
+        
+            // 🔒 Check for dangerous/infinite patterns
+            const riskyPatterns = [
+                /while\s*\(\s*true\s*\)/gi,
+                /for\s*\(\s*;\s*;\s*\)/gi,
+                /setInterval\s*\(/gi,
+                /setTimeout\s*\(\s*function\s*\(\)\s*{\s*while\s*\(/gi,
+                /document\.write\s*\(/gi
+            ];
+            if (riskyPatterns.some(p => p.test(jsCode))) {
+                consoleOutput.innerHTML += "<p style='color:orange;'>⚠️ Potential infinite loop or dangerous code. Execution skipped!</p>";
+                return;
+            }
+        
+            // 🧹 Clear console before each run
+            consoleOutput.innerHTML = "";
+        
+            // 🧠 Full safe HTML + JS code
+            const fullCode = `
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <style>${cssCode}</style>
+                </head>
+                <body>
+                    ${htmlCode}
+                </body>
+                <script>
+                    (function() {
+                        var oldLog = console.log;
+                        var oldError = console.error;
+                        var oldWarn = console.warn;
+                        var consoleOutput = window.parent.document.getElementById("console-output");
+        
+                        console.log = function(message) {
+                            oldLog.apply(console, arguments);
+                            consoleOutput.innerHTML += '<p style="color:white;">[LOG] ' + message + '</p>';
+                            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+                        };
+        
+                        console.error = function(message) {
+                            oldError.apply(console, arguments);
+                            consoleOutput.innerHTML += '<p style="color:red;">[ERROR] ' + message + '</p>';
+                            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+                        };
+        
+                        console.warn = function(message) {
+                            oldWarn.apply(console, arguments);
+                            consoleOutput.innerHTML += '<p style="color:yellow;">[WARN] ' + message + '</p>';
+                            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+                        };
+                    })();
+        
+                    // 🛡️ Safe delayed execution to avoid blocking
+                    setTimeout(() => {
+                        try {
+                            ${jsCode}
+                        } catch (e) {
+                            console.error("Runtime Error:", e);
+                        }
+                    }, 0);
+                <\/script>
+                </html>
+            `;
+        
+            // ✅ Inject safe code into iframe
+            livePreview.srcdoc = fullCode;
+        
+            // ⏱ Kill iframe if it doesn't respond in 4s
+            setTimeout(() => {
+                const iframeDoc = livePreview.contentDocument || livePreview.contentWindow?.document;
+                if (!iframeDoc || iframeDoc.readyState !== "complete") {
+                    livePreview.srcdoc = `<p style='color:red;padding:1em;'>⛔ Code execution stopped: possible infinite loop.</p>`;
+                    consoleOutput.innerHTML += "<p style='color:red;'>⚠️ Auto-killed due to long-running or unsafe script.</p>";
+                }
+            }, 4000); // You can tweak timeout (ms)
+        }        
+
         function debounce(func, delay) {
             let timeout;
             return function () {
@@ -66,60 +160,18 @@ document.addEventListener("DOMContentLoaded", function () {
             };
         }
 
-        // ✅ Function to update the iframe preview
-        function updateOutput() {
-            const htmlCode = editors.html.getValue();
-            const cssCode = editors.css.getValue();
-            const jsCode = editors.js.getValue();
-
-            const iframe = document.getElementById("livePreview");
-            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-
-            // Clear previous content safely
-            iframeDoc.head.innerHTML = "";
-            iframeDoc.body.innerHTML = "";
-
-            // ✅ Add HTML
-            iframeDoc.body.innerHTML = htmlCode;
-
-            // ✅ Add CSS dynamically
-            const style = document.createElement("style");
-            style.innerHTML = cssCode;
-            iframeDoc.head.appendChild(style);
-
-            // ✅ Remove old script before adding new one
-            const oldScript = iframeDoc.getElementById("liveScript");
-            if (oldScript) oldScript.remove();
-
-            // ✅ JavaScript Syntax Check
-            try {
-                new Function(jsCode); // This will throw an error if jsCode has syntax issues
-
-                // ✅ Create and add JavaScript safely
-                const script = document.createElement("script");
-                script.id = "liveScript";
-                script.textContent = jsCode;
-                iframeDoc.body.appendChild(script);
-            } catch (error) {
-                iframeDoc.body.innerHTML += `<p style="color:red;">JS Error: ${error.message}</p>`;
-            }
-        }
-
-        // ✅ Debounced version of updateOutput for performance
         const debouncedUpdate = debounce(() => {
             updateOutput();
-            autoSaveCode(); // ✅ Auto-Save feature
+            autoSaveCode();
         }, 100);
 
-        // ✅ Attach Monaco Editor event listeners to update preview
         Object.values(editors).forEach(editor => {
             editor.onDidChangeModelContent(debouncedUpdate);
         });
 
-        // ✅ Initial call to set up everything
+        
         updateOutput();
 
-        // ✅ Fix: Download & Upload Code Inside Monaco Initialization
         document.getElementById("downloadCode").addEventListener("click", function () {
             const codeData = {
                 html: editors.html.getValue(),
@@ -154,63 +206,13 @@ document.addEventListener("DOMContentLoaded", function () {
             };
             reader.readAsText(file);
         });
-        
 
+        document.querySelector('.menu-btn').addEventListener('click', function () {
+            document.getElementById('draw-menu').classList.toggle('active');
+        });
+
+        document.getElementById("clear-console").addEventListener("click", function () {
+            consoleOutput.innerHTML = "";
+        });
     });
-});document.addEventListener("DOMContentLoaded", function () {
-    let consoleContainer = document.createElement("div");
-    consoleContainer.id = "console-container";
-    document.body.appendChild(consoleContainer);
-
-    let consoleOutput = document.createElement("div");
-    consoleOutput.id = "console-output";
-    consoleContainer.appendChild(consoleOutput);
-
-    let clearButton = document.createElement("button");
-    clearButton.id = "clear-console";
-    clearButton.textContent = "Clear Console";
-    clearButton.onclick = function () {
-        consoleOutput.innerHTML = "";
-    };
-    consoleContainer.appendChild(clearButton);
-
-    function logMessage(type, message) {
-        let msgElement = document.createElement("div");
-        msgElement.textContent = `[${type.toUpperCase()}] ${message}`;
-        msgElement.style.color = type === "error" ? "red" : type === "warn" ? "yellow" : "white";
-        consoleOutput.appendChild(msgElement);
-        consoleOutput.scrollTop = consoleOutput.scrollHeight;
-    }
-
-    window.editorConsole = console.log;
-console.log = function (...args) {
-    logMessage("log", args.join(" "));
-    window.editorConsole(...args); // Preserve original console.log
-};
-
-
-    console.error = function (...args) {
-        logMessage("error", args.join(" "));
-    };
-
-    console.warn = function (...args) {
-        logMessage("warn", args.join(" "));
-    };
-
-    // ✅ Execute JavaScript from Monaco Editor
-    function executeEditorJS() {
-        try {
-            let code = window.editors.js.getValue(); // ✅ Get JS Code from Monaco Editor
-            let result = eval(code);
-            if (result !== undefined) console.log(result);
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    // ✅ Button to Execute Monaco JS Code
-    let runButton = document.createElement("button");
-    runButton.textContent = "Run JS";
-    runButton.onclick = executeEditorJS;
-    consoleContainer.appendChild(runButton);
 });

@@ -1,6 +1,40 @@
-let check="0";
+// 🧠 Compress image before sending to OCR API
+function compressImage(file, maxSizeKB, callback) {
+    const reader = new FileReader();
+    reader.onload = function (event) {
+        const img = new Image();
+        img.src = event.target.result;
+        img.onload = function () {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            const MAX_WIDTH = 800;
+            const scale = MAX_WIDTH / img.width;
+            canvas.width = MAX_WIDTH;
+            canvas.height = img.height * scale;
+
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            let quality = 0.7;
+            let compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+
+            while (compressedDataUrl.length / 1024 > maxSizeKB && quality > 0.1) {
+                quality -= 0.1;
+                compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+            }
+
+            fetch(compressedDataUrl)
+                .then(res => res.blob())
+                .then(blob => {
+                    const compressedFile = new File([blob], file.name, { type: 'image/jpeg' });
+                    callback(compressedFile);
+                });
+        };
+    };
+    reader.readAsDataURL(file);
+}
+
+let check = "0";
 document.querySelector('.button').addEventListener('click', async function () {
-    //execute after submit clicked
     const fileInput = document.querySelector('#image');
     const urlInput = document.querySelector('#image-url');
     const displayDiv = document.querySelector('#displayinput');
@@ -8,30 +42,32 @@ document.querySelector('.button').addEventListener('click', async function () {
     const inputsTextarea = document.querySelector('#inputs');
     var langType = document.querySelector('#langType');
     document.querySelector('.display').style.visibility = 'visible';
-    check="1";
-    
+    check = "1";
+
     displayDiv.innerHTML = '';
     resultsTextarea.value = '';
-    
-    //find the local image
+
     if (fileInput.files.length === 0 && !urlInput.value.trim()) {
         resultsTextarea.value = "Please upload an image or provide a valid image URL!";
         return;
     }
-    
+
     if (fileInput.files.length > 0) {
         const file = fileInput.files[0];
         if (!file.type.startsWith('image/')) {
             resultsTextarea.value = "The selected file is not an image!";
             return;
         }
-        
-        const reader = new FileReader();
-        reader.onload = async function (e) {
-            displayDiv.innerHTML = `<img src="${e.target.result}" alt="Selected Image" style="width: 300px; height: 200px;" />`;
-            await analyzeImageFile(file, resultsTextarea);
-        };
-        reader.readAsDataURL(file);
+
+        compressImage(file, 1000, async (compressedFile) => {
+            const reader = new FileReader();
+            reader.onload = async function (e) {
+                displayDiv.innerHTML = `<img src="${e.target.result}" alt="Selected Image" style="width: 300px; height: 200px;" />`;
+                await analyzeImageFile(compressedFile, resultsTextarea);
+            };
+            reader.readAsDataURL(compressedFile);
+        });
+
     } else {
         const imageUrl = urlInput.value.trim();
         displayDiv.innerHTML = `<img src="${imageUrl}" alt="Selected Image" style="width: 300px; height: 200px;" />`;
@@ -39,7 +75,6 @@ document.querySelector('.button').addEventListener('click', async function () {
     }
 });
 
-//OCR API formal code
 async function analyzeImageFile(imageFile, resultsTextarea) {
     try {
         const formData = new FormData();
@@ -62,7 +97,6 @@ async function analyzeImageFile(imageFile, resultsTextarea) {
     }
 }
 
-//replica for file link
 async function analyzeImageUrl(imageUrl, resultsTextarea) {
     try {
         const formData = new FormData();
@@ -85,24 +119,22 @@ async function analyzeImageUrl(imageUrl, resultsTextarea) {
     }
 }
 
-//OCR response function
 function handleOCRSuccess(response, resultsTextarea) {
     if (response.OCRExitCode === 1) {
         const extractedText = response.ParsedResults.map(result => result.ParsedText).join('\n');
-        
-        // Instead of setting innerText, update Monaco Editor
         document.getElementById("results").value = extractedText;
         updateEditorContent(extractedText);
     } else {
         updateEditorContent(`Error: ${response.ErrorMessage || "Failed to process the image."}`);
     }
 }
-
 //checkAi button
 document.getElementById("checkAi").addEventListener("click", async () => {
     let codeInput = window.cppEditor.getValue();
-    let langType = document.getElementById("langType").value; 
-    let fixedCode = await correctedCode(codeInput,langType);  
+    let langSelector = document.getElementById("langType");
+    let selectedLang = langSelector.value;
+    console.log(`code in lang :${selectedLang}`);
+    let fixedCode = await correctedCode(codeInput,selectedLang);  
     if (fixedCode !== "Error in AI response!") {
         updateEditorContent(fixedCode);
     } else {
@@ -129,7 +161,7 @@ async function correctedCode(codeText,langType) {
                 "contents": [
                     {
                         "parts": [
-                            { "text": `Correct the following programming code:\n\n${codeText}.only correct these codes not give any extra text.make this code ready to give it to compiler.dont add any starting or ending comment in the output.if(${codeText} not contains any text then check for and input prompt to write code in ${langType}) and for cpp always try to use using namespace std other than writting std again and again and also give focus on readablity of code in correct formating in case of python` }
+                            { "text": `Correct the following programming code in ${langType}):\n\n${codeText}.only correct these codes not give any extra text.make this code ready to give it to compiler.dont add any starting or ending comment in the output.if(${codeText} not contains any text then check for and input prompt to write code in ${langType}) and if ${langType} is cpp always try to use using namespace std other than writting std again and again and also give focus on readablity of code in correct formating in case of python.NOTE[remember dont write any extra text before and after code showing start and end]` }
                         ]
                     }
                 ]
@@ -141,9 +173,15 @@ async function correctedCode(codeText,langType) {
         }
 
         let data = await response.json();
-        check="1";
-        console.log(check);
-        return data.candidates?.[0]?.content?.parts?.[0]?.text.trim() || "Error in AI response!";
+        let rawText = data.candidates?.[0]?.content?.parts?.[0]?.text.trim() || "Error in AI response!";
+        
+        // ✅ Remove triple backticks and mermaid/html tags
+        let cleanedText = rawText
+            .replace(/```(mermaid|html|[\s]*)/g, '')
+            .replace(/```/g, '');
+
+
+        return cleanedText || "Error in AI response!";
         
     } catch (error) {
         console.error("Error:", error.message);
@@ -159,8 +197,7 @@ window.onload = function () {
 
     require(["vs/editor/editor.main"], function () {
         let langSelector = document.getElementById("langType");
-        let selectedLang = langSelector.value || "cpp"; // Default to C++
-
+        let selectedLang = langSelector.value ; 
         let editorContainer = document.getElementById("results");
         let editorContainer2 = document.getElementById("inputs");
 
@@ -183,7 +220,7 @@ window.onload = function () {
             value: "",
             language: selectedLang,
             theme: "vs-dark",
-            automaticLayout: true
+            automaticLayout: true,
         });
 
         window.cppEditor2 = monaco.editor.create(editorContainer2, {

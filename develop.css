@@ -1,101 +1,120 @@
-* {
+*{
+    margin:0px;
+}
+body{
+    background-color:#117bef;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+}
+nav{
+    background-color:rgb(99 177 228);
+    display: flex;
+    width:auto;
+    height:40px;
+    padding: 13px;
+    align-items:center;
+}
+nav a{
+    padding: 15px;
+    list-style: none;
+    text-decoration:none;
+    color:white;
+    text-overflow: none;
+    justify-content: center;
+    align-content: center;
+    border-radius: 10px;
+}
+a:hover{
+    background-color: #0050a7;
+}
+.downloadbtns{
+    position:absolute;
+    left:75%;
 }
 
-body {
-    background-color: #117bef;
-    font-family: Arial, sans-serif;
+.main-tittle{
+    font-size:33px;
+    position: absolute;
+    left: 50%;
+}
+#main-content{
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    padding: 10px;
+    height: auto; 
+    flex-direction: column; 
 }
 
-/* Navbar Styling */
-nav {
-    background-color: rgb(99, 177, 228);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 10px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
+.divisions{
+    display:flex;    
 }
-
-nav a {
-    text-decoration: none;
-    color: white;
-    font-size: 16px;
-    margin: 0 10px;
+.inputs{
+    width:50%;
+    display:flex;
+    flex-direction:column;
 }
-
-.downloadbtns {
-    display: flex;
-    gap: 10px;
+label{
+    color:white;
+    font-size:15px;
 }
-
-/* Main Content Layout */
-.divisions {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Split editors and preview */
-    gap: 15px;
-    width: 100%;
-    max-width: 1200px;
-    margin-top: 70px;
-}
-
-/* Editors Panel */
-.inputs {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-/* Editor Boxes */
-.editor-container {
-    background-color: rgb(54, 54, 55);
-    width: 100%;
-    height: 250px; /* Auto scaling */
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    overflow: hidden;
-}
-
-/* Output Section */
 .output {
     background-color: white;
-    width: 100%;
     border: 1px solid #ddd;
-    border-radius: 5px;
-    height: 100%;
-    min-height: 300px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    width: 50%;
 }
 
-/* Console Panel */
+/* Add to your existing develop.css */
+#deleteRoom, #leaveRoom {
+    background: #ff4444; /* Red for delete/disconnect */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+#roomStatus {
+    color: white;
+    margin-top: 10px;
+}
+
+#createRoom, #joinRoom {
+    background: #117bef;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+#roomInput {
+    padding: 5px;
+    margin-right: 10px;
+}
+
+.editor-container {
+    background-color:rgb(54 54 55);
+    width: 100%;
+    height: 200px;
+    border: 1px solid #ddd;
+}
 #console-container {
     background-color: black;
     color: white;
     font-family: monospace;
-    height: 200px;
+    height:200px;
+    margin-top:25px;
     width: 100%;
     overflow-y: auto;
     border-top: 2px solid #555;
-    padding: 10px;
+    position: absolute;
+    left: 0;
 }
-
 #console-output {
     height: 150px;
     overflow-y: auto;
     white-space: pre-wrap;
 }
-
-/* Console Clear Button */
 #clear-console {
     background: red;
     color: white;
@@ -103,35 +122,193 @@ nav a {
     padding: 5px 10px;
     cursor: pointer;
     font-weight: bold;
-    margin-bottom: 5px;
+}
+.menu-btn{
+    visibility:hidden;
 }
 
-/* Responsive Design */
-@media only screen and (max-width: 850px) {
-    .divisions {
-        grid-template-columns: 1fr; /* Stack editors & output */
-    }
+@media only screen and (max-width: 900px) {
 
-    .editor-container {
-        height: 200px; /* Reduce height on small screens */
-    }
-
-    .output {
-        min-height: 250px;
-    }
-
-    .downloadbtns {
+    #draw-menu {
+        position: fixed;
+        left: 0;
+        top: 50px;
+        width: 80%;
+        max-width: 250px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 10px;
+        display: none; /* Initially hidden */
         flex-direction: column;
-        align-items: flex-end;
+        z-index: 1000;
     }
 
-    #console-container {
-        height: 150px;
+    #draw-menu.active {
+        display: flex; /* Show when active */
+    }
+
+    #draw-menu a {
+        display: block;
+        padding: 10px;
+        border-bottom: 1px solid #555;
+        text-decoration: none;
+        color: white;
+        text-align: left;
+    }
+
+    #draw-menu a:hover {
+        background: green;
+    }
+
+    /* Menu Toggle Button */
+    .menu-btn {
+        visibility:visible;
+        display: block;
+        position: fixed;
+        left: 10px;
+        top: 10px;
+        background: green;
+        color: white;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+        z-index: 1001;
     }
 
     nav {
         flex-direction: column;
         text-align: center;
-        padding: 10px 0;
+        padding: 10px;
+    }
+
+    .main-tittle {
+        font-size: 28px;
+        position: static;
+        text-align: center;
+    }
+    tr{
+        display:flex;
+        flex-direction:column;
+    }
+    #checkAi{
+        margin-left:0px;
+    }
+    h1{
+        font-size:34px;
+    }
+    #main-content{
+        display: flex;
+        margin-top: 5rem;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        flex-direction: column;
+    }
+    #draw-menu {
+        position: fixed;
+        left: 0;
+        top: 50px;
+        width: 80%;
+        max-width: 250px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 10px;
+        display: none; /* Initially hidden */
+        flex-direction: column;
+        z-index: 1000;
+    }
+
+    #draw-menu.active {
+        display: flex; /* Show when active */
+    }
+
+    #draw-menu a {
+        display: block;
+        padding: 10px;
+        border-bottom: 1px solid #555;
+        text-decoration: none;
+        color: white;
+        text-align: left;
+    }
+
+    #draw-menu a:hover {
+        background: green;
+    }
+
+    /* Menu Toggle Button */
+    .menu-btn {
+        visibility:visible;
+        display: block;
+        position: fixed;
+        left: 10px;
+        top: 10px;
+        background: green;
+        color: white;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+        z-index: 1001;
+    }
+    #draw-menu {
+        position: fixed;
+        left: 0;
+        top: 50px;
+        width: 80%;
+        max-width: 250px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 10px;
+        display: none; /* Initially hidden */
+        flex-direction: column;
+        z-index: 1000;
+    }
+
+    #draw-menu.active {
+        display: flex; /* Show when active */
+    }
+
+    #draw-menu a {
+        display: block;
+        padding: 10px;
+        border-bottom: 1px solid #555;
+        text-decoration: none;
+        color: white;
+        text-align: left;
+    }
+
+    #draw-menu a:hover {
+        background: green;
+    }
+
+    /* Menu Toggle Button */
+    .menu-btn {
+        visibility:visible;
+        display: block;
+        position: fixed;
+        left: 10px;
+        top: 10px;
+        background: green;
+        color: white;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+        z-index: 1001;
+    }
+    .divisions{
+        display:flex;
+        flex-direction :column;
+    }
+    .inputs{
+        width:100%;
+        flex-direction:column;
+        margin-left:5px;
+        margin-right:5px;
+    }
+    .output{
+        width:100%;
+        margin-top:20px;
+        margin-left:5px;
+        margin-right:5px;
+        height: 100vh; /* Full height use kare */    
     }
 }

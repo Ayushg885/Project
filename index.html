@@ -3,18 +3,30 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Code, debug, and preview HTML/CSS/JS with AI-powered OCR and execution. Perfect for developers and learners.">
+    <meta name="keywords" content="coding, OCR, AI code correction, live preview, web development">
+    <meta name="google-adsense-account" content="ca-pub-1888805023558460">
     <link rel="stylesheet" href="index.css">
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      mermaid.initialize({ startOnLoad: true });
+    </script>    
+    <link rel="icon" type="image/x-icon" href="index_icon.ico"/>
     <title>Coder</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1888805023558460"
+     crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"
     integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
     crossorigin="anonymous"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@2/dist/tesseract.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/mxgraph/javascript/mxClient.min.js"></script>
     <script>
       var require = { paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs' } };
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs/loader.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs/editor/editor.main.nls.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs/editor/editor.main.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
     <script type="module" src="index.js"></script>
     <script  type="module" src="text.js"></script>
     <script  type="module" src="output.js"></script>
@@ -23,14 +35,15 @@
   <nav>
     <button class="menu-btn" >☰ </button>
     <div id="draw-menu">
-    <a href="#">Home</a>
-    <a href="#">Coding</a>
+    <a href="/">Home</a>
+    <a href="/">Coding</a>
     <a href="/develop.html">Development</a>
-    </div>
-    <h2 class="main-tittle">Coder</h2>
+  </div>
+  <h2 class="main-tittle">Coder</h2>
+  <a href="/login.html" id="login">Login</a>
   </nav>
   <div id="main-content">
-    <h1>Upload Image or Provide Image URL</h1>
+    <h1 class="heading"></h1>
      <div class="container">
        <label for="image">Upload Image:</label>
        <input type="file" accept="image/*" id="image">
@@ -45,21 +58,49 @@
             <td><div class="textarea" id="inputs"></div></td>
         </tr>
       </table>
+      <div class="selections">
       <button id="checkAi">check with Ai</button>
+      <div class="runbox">
       <select title="langType" class="options" id="langType">
-      <option value="cpp">C++</option>
-      <option value="py">python</option>
-      <option value="java">Java</option>
+        <option value="cpp">C++</option>
+        <option value="c">C</option>
+        <option value="python">Python</option>
+        <option value="java">Java</option>
+        <option value="javascript">JavaScript</option>
+        <option value="typescript">TypeScript</option>
+        <option value="csharp">C#</option>
+        <option value="html">HTML</option>
+        <option value="css">CSS</option>
+        <option value="json">JSON</option>
+        <option value="xml">XML</option>
+        <option value="markdown">Markdown</option>
+        <option value="sql">SQL</option>
+        <option value="shell">Shell Script</option>
+        <option value="php">PHP</option>
+        <option value="ruby">Ruby</option>
+        <option value="go">Go</option>
+        <option value="rust">Rust</option>
+        <option value="kotlin">Kotlin</option>
+        <option value="swift">Swift</option>
+        <option value="r">R</option>
+        <option value="yaml">YAML</option>
+        <option value="dockerfile">Dockerfile</option>
+        <option value="perl">Perl</option>
+        <option value="powershell">PowerShell</option>
+        <option value="lua">Lua</option>
+        <option value="dart">Dart</option>        
     </select>
+    
       <input type="checkbox" id="cbox" class="box"/>
       <label for="cbox" class="box">Input</label>
       <button id="run">Run</button>
     </div>
+  </div>
+    </div>
       <div class="displayRun">
-      <div id="output"></div>
-      <button id="explain">Explain</button>      
+      <pre id="output"></pre>
+      <button id="explain">Explain</button>     
       <div id="explainCode"></div>
-      
       </div>
      </div>
     </div>

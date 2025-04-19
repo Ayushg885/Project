@@ -1,132 +1,163 @@
-*{
-    margin:0px;
-    height:auto;
-    width:auto;
+* {
+    margin: 0px;
 }
-body{
-    background-image :url("https://img.freepik.com/free-vector/stream-binary-code-design-vector_53876-161363.jpg?semt=ais_hybrid");
+html, body {
+    overflow-x: hidden;
     font-family: Arial, sans-serif;
-    color:white;
+    color: white;
 }
-nav{
+body {
+    background-image: url('background.png');
+}
+
+/* Navbar */
+nav {
     display: flex;
-    width:auto;
-    min-height:40px;
+    width: auto;
+    min-height: 40px;
     padding: 13px;
-    align-items:center;
+    align-items: center;
+    flex-wrap: wrap;
 }
-nav a{
+nav a {
     padding: 15px;
-    list-style: none;
-    text-decoration:none;
-    color:white;
-    text-overflow: none;
-    justify-content: center;
-    align-content: center;;
+    text-decoration: none;
+    color: white;
+    border-radius: 10px;
 }
-a:hover{
+a:hover {
     background-color: green;
 }
-.main-tittle{
-    font-size:33px;
+#login {
     position: absolute;
-    left: 50%;
+    right: 25px;
+    font-size: larger;
 }
-#main-content{
+.main-tittle {
+    font-size: 33px;
+    position: relative;
+    left: 30%;
+}
+
+/* Main Content */
+#main-content {
     display: flex;
-    margin-top:9.8rem;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    height:100%; 
-    flex-direction: column; 
+    margin-top: 9.8rem;
+    height: 100%;
 }
-h1{
-    font-size: 54px ;
-    justify-content: center;
-    align-content: center;
-    margin-top: 8px;
-    margin-bottom: 8px;
+h1 {
+    font-size: 54px;
+    margin: 8px 0;
 }
-tr{
-    gap:5px;
+tr {
+    gap: 5px;
 }
-.container{
+.container {
     padding: 8px;
-    justify-items:center;
-    width:100%;
+    width: 100%;
+    justify-items: center;
 }
-.textarea{
+.textarea,
+#results,
+#inputs {
     width: 30%;
     height: 200px;
 }
-#checkAi{
-    
+#results,
+#inputs {
+    width: 400px;
+}
+#checkAi, #run, #explain {
+    height: 35px;
+    width: 100px;
+    margin-bottom: 10px;
+}
+.selections{
+    display: flex;
+    margin:8px;
+    gap:10px;
+}
+#checkAi {
     margin-left: 200px;
+}
+#checkAi:hover,
+#run:hover,
+#explain:hover {
+    background-color: green;
+}
+.options {
     height: 35px;
-    width:100px;
+    width: 200px;
 }
-#results{
-    width:400px;
-    height:200px;
+.box {
+    color: white;
 }
-#inputs{
-    width:400px;
-    height:200px;
-}
-#checkAi:hover{
-    background-color:green;
-} 
-#run{
-    height: 35px;
-    width:100px;
-}
-#run:hover{
-    background-color:green;
-}
-.options{
-    height:35px;
-    width:200px;
-}
-.box{
-    color:white;
-}
-#output{
+#output {
     height: 300px;
     min-width: 75%;
     background-color: black;
-    color:white;
 }
-.display{
+.display,
+.displayRun {
     visibility: collapse;
 }
-.displayRun{
-    visibility: collapse;
-    display:flex;
-    flex-direction:column;
-    width:100%;
-    align-items:center;
-    justify-content:center;
-    margin:10px;
+.displayRun {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
 }
-#explain{
-    height: 35px;
-    width:100px;
-}
-
-#explain:hover{
-    background-color:green;
+#explainCode {
+    max-width: 80%;
+    background-color: #958585;
+    color: white;
+    padding: 45px;
 }
 
-#explainCode{
-    height:300px;
-    max-width:60%;
-    background-color:black;
-    color:white;
+/* Menu Button */
+.menu-btn {
+    visibility: hidden;
 }
-.menu-btn{
-    visibility:hidden;
-}
+
+/* -------------------- Responsive Styles -------------------- */
 @media screen and (max-width: 800px) {
+    nav {
+        flex-direction: column;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .main-tittle {
+        font-size: 28px;
+        position: static;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 34px;
+    }
+
+    tr {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #main-content {
+        margin-top: 5rem;
+        margin: 20px;
+    }
+
+    #checkAi {
+        margin-left: 5px;
+        width: -webkit-fill-available;
+    }
+
+    /* Menu */
     #draw-menu {
         position: fixed;
         left: 0;
@@ -136,31 +167,30 @@ tr{
         background: rgba(0, 0, 0, 0.8);
         color: white;
         padding: 10px;
-        display: none; /* Initially hidden */
+        display: none;
         flex-direction: column;
         z-index: 1000;
     }
 
     #draw-menu.active {
-        display: flex; /* Show when active */
+        display: flex;
     }
 
     #draw-menu a {
         display: block;
         padding: 10px;
         border-bottom: 1px solid #555;
-        text-decoration: none;
         color: white;
         text-align: left;
+        text-decoration: none;
     }
 
     #draw-menu a:hover {
         background: green;
     }
 
-    /* Menu Toggle Button */
     .menu-btn {
-        visibility:visible;
+        visibility: visible;
         display: block;
         position: fixed;
         left: 10px;
@@ -173,33 +203,25 @@ tr{
         z-index: 1001;
     }
 
-    nav {
+    .display {
+        display: flex;
         flex-direction: column;
-        text-align: center;
-        padding: 10px;
+        align-items: center;
     }
-
-    .main-tittle {
-        font-size: 28px;
-        position: static;
-        text-align: center;
-    }
-    tr{
+    .selections{
         display:flex;
         flex-direction:column;
+        gap:0px;
     }
-    #checkAi{
-        margin-left:0px;
-    }
-    h1{
-        font-size:34px;
-    }
-    #main-content{
+
+    .runbox {
+        width: -webkit-fill-available;
         display: flex;
-        margin-top: 5rem;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-        flex-direction: column;
+        flex-direction:center;
+        align-items:center;
+        gap: 5px;
+    }
+    .options{
+        text-align:center;
     }
 }
